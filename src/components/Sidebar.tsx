@@ -19,7 +19,7 @@ import {
   Info,
   Smartphone,
 } from 'lucide-react';
-import baiessLogo from '../assets/baiess-logo.svg';
+import baiessLogo from '../assets/baiess-logo.png';
 
 interface SidebarProps {
   currentTab: string;
