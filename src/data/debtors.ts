@@ -1,4 +1,4 @@
-import { Debtor, AccountOfficer, PdpLogEntry } from '../types';
+import { Debtor, AccountOfficer, PdpLogEntry, MerchantContext } from '../types';
 
 export const DEBTORS_DATA: Debtor[] = [
   {
@@ -273,3 +273,430 @@ export const PDP_AUDIT_LOGS: PdpLogEntry[] = [
     status: 'Valid',
   },
 ];
+
+// Merchant Context - Financial State Engine Demo Data
+export const MERCHANT_CONTEXT: MerchantContext = {
+  id: '#MERCHANT-001',
+  name: 'Grosir Berkah Barokah',
+  owner: 'Pak Yudi Santoso',
+  market: 'Pasar Wonokromo',
+  city: 'Surabaya',
+  sector: 'FMCG Distributor',
+  phone: '+62 812-3456-7890',
+  bprCredential: {
+    plafon: 35000000,
+    angsuran: 2800000,
+    dueDate: '12 Okt 2026',
+    dueDaysRemaining: 22,
+  },
+  
+  // Fitur B: Financial State Engine
+  financialState: {
+    effectiveCash: {
+      totalLiquid: 8450000,
+      urgentObligation: 2800000,
+      availableForUse: 5650000,
+    },
+    cashBuffer: {
+      bufferMargin: 5650000,
+      bufferDays: 8,
+      bufferThreshold: 2000000,
+      status: 'critical',
+    },
+    cashConversionCycle: {
+      dio: 18,
+      dso: 12,
+      dpo: 8,
+      ccc: 22,
+    },
+    accountsReceivable: {
+      totalAr: 14200000,
+      arAging: [
+        {
+          range: '0–7 Hari',
+          label: 'Lancar Normal',
+          days: 7,
+          amount: 8520000,
+          percent: 60,
+          color: 'bg-emerald-500',
+        },
+        {
+          range: '8–14 Hari',
+          label: 'Mulai Tertunda',
+          days: 14,
+          amount: 3550000,
+          percent: 25,
+          color: 'bg-amber-500',
+        },
+        {
+          range: '> 14 Hari',
+          label: 'Macet Ringan / Prioritas Tagih',
+          days: 30,
+          amount: 2130000,
+          percent: 15,
+          color: 'bg-red-500',
+        },
+      ],
+      overdueAmount: 2130000,
+      overdueCount: 3,
+    },
+    lastUpdated: '2026-09-20 14:35:22 WIB',
+    updateLatency: 2350,
+    auditTrail: [
+      {
+        transactionId: 'TRX-20260920-001',
+        timestamp: '14:35:22',
+        amount: 1500000,
+        category: 'inflow',
+        description: 'Pelunasan Toko Barokah',
+      },
+      {
+        transactionId: 'TRX-20260920-002',
+        timestamp: '13:45:10',
+        amount: 2200000,
+        category: 'outflow',
+        description: 'Pembelian Minyak PT Wings',
+      },
+      {
+        transactionId: 'TRX-20260920-003',
+        timestamp: '11:20:05',
+        amount: 800000,
+        category: 'inflow',
+        description: 'Pelunasan Warung Mak Siti',
+      },
+      {
+        transactionId: 'TRX-20260919-001',
+        timestamp: '16:15:40',
+        amount: 3500000,
+        category: 'outflow',
+        description: 'Pembelian Stok Gula Pasir',
+      },
+      {
+        transactionId: 'TRX-20260919-002',
+        timestamp: '09:30:15',
+        amount: 2100000,
+        category: 'inflow',
+        description: 'Pelunasan Warung Sejo',
+      },
+    ],
+  },
+
+  // Fitur C: Tactical Cashflow Forecasting
+  cashFlowForecast: {
+    generatedAt: '2026-09-20 14:35:22 WIB',
+    horizon: 30,
+    projections: [
+      {
+        date: '21 Sep 2026',
+        dayNumber: 1,
+        base: 6200000,
+        upperBound: 7500000,
+        lowerBound: 4900000,
+        scheduledPayments: [],
+        confidence: 'high',
+      },
+      {
+        date: '22 Sep 2026',
+        dayNumber: 2,
+        base: 5800000,
+        upperBound: 7200000,
+        lowerBound: 4300000,
+        scheduledPayments: [
+          {
+            type: 'supplier-invoice',
+            name: 'Faktur PT Wings',
+            amount: 2200000,
+          },
+        ],
+        confidence: 'high',
+      },
+      {
+        date: '23 Sep 2026',
+        dayNumber: 3,
+        base: 6500000,
+        upperBound: 8000000,
+        lowerBound: 5100000,
+        scheduledPayments: [
+          {
+            type: 'warung-pelunasan',
+            name: 'Pelunasan Warung',
+            amount: 1200000,
+          },
+        ],
+        confidence: 'high',
+      },
+      {
+        date: '24 Sep 2026',
+        dayNumber: 4,
+        base: 5900000,
+        upperBound: 7600000,
+        lowerBound: 4200000,
+        scheduledPayments: [],
+        confidence: 'high',
+      },
+      {
+        date: '25 Sep 2026',
+        dayNumber: 5,
+        base: 4500000,
+        upperBound: 6200000,
+        lowerBound: 2800000,
+        scheduledPayments: [
+          {
+            type: 'supplier-invoice',
+            name: 'Faktur Gula',
+            amount: 1800000,
+          },
+        ],
+        confidence: 'high',
+      },
+      {
+        date: '26 Sep 2026',
+        dayNumber: 6,
+        base: 3800000,
+        upperBound: 5500000,
+        lowerBound: 2100000,
+        scheduledPayments: [],
+        confidence: 'medium',
+      },
+      {
+        date: '27 Sep 2026',
+        dayNumber: 7,
+        base: 3200000,
+        upperBound: 5000000,
+        lowerBound: 1500000,
+        scheduledPayments: [],
+        confidence: 'medium',
+      },
+      {
+        date: '01 Okt 2026',
+        dayNumber: 11,
+        base: 2800000,
+        upperBound: 4600000,
+        lowerBound: 1000000,
+        scheduledPayments: [
+          {
+            type: 'warung-pelunasan',
+            name: 'Pelunasan Warung Minggu 1',
+            amount: 2500000,
+          },
+        ],
+        confidence: 'medium',
+      },
+      {
+        date: '05 Okt 2026',
+        dayNumber: 15,
+        base: 3500000,
+        upperBound: 5200000,
+        lowerBound: 1800000,
+        scheduledPayments: [],
+        confidence: 'low',
+      },
+      {
+        date: '10 Okt 2026',
+        dayNumber: 20,
+        base: 2500000,
+        upperBound: 4300000,
+        lowerBound: 700000,
+        scheduledPayments: [],
+        confidence: 'low',
+      },
+      {
+        date: '12 Okt 2026',
+        dayNumber: 22,
+        base: 1800000,
+        upperBound: 3600000,
+        lowerBound: 200000,
+        scheduledPayments: [
+          {
+            type: 'bpr-angsuran',
+            name: 'Angsuran BPR',
+            amount: 2800000,
+          },
+        ],
+        confidence: 'low',
+      },
+      {
+        date: '20 Okt 2026',
+        dayNumber: 30,
+        base: 3200000,
+        upperBound: 5000000,
+        lowerBound: 1500000,
+        scheduledPayments: [],
+        confidence: 'low',
+      },
+    ],
+    criticalBreachDate: '2026-10-12',
+    dataPoints: 45,
+    modelType: 'sarima',
+    dataAge: 18,
+  },
+
+  // Fitur D: Early Warning Alerts
+  earlyWarnings: [
+    {
+      id: 'ALERT-001',
+      severity: 'critical',
+      horizon: '14-day-tactical',
+      title: 'Proyeksi Kas Mencapai Batas Kritis',
+      description: 'Saldo kas diproyeksikan akan menyentuh batas minimum aman (Rp 2 juta) pada 12 Oktober 2026.',
+      evidenceTrigger: {
+        metric: 'Posisi Kas Efektif',
+        currentValue: 5650000,
+        threshold: 2000000,
+        variance: -3650000,
+        unit: 'IDR',
+      },
+      affectedEntity: 'Grosir Berkah Barokah (Seluruh Usaha)',
+      projectedDate: '12 Okt 2026',
+      daysUntilCritical: 22,
+      recommendedAction:
+        'Segera percepat penagihan piutang warung, khususnya Toko Barokah (Rp 2.5 Juta) dan Warung Mak Siti (Rp 1.2 Juta). Pertimbangkan penyesuaian jadwal angsuran BPR atau penarikan dana tambahan dari pemilik usaha.',
+      generatedAt: '2026-09-20 14:35:22 WIB',
+      isDuplicate: false,
+      deduplicationGroupId: 'GRP-CASH-CRITICAL-001',
+    },
+    {
+      id: 'ALERT-002',
+      severity: 'warning',
+      horizon: '14-day-tactical',
+      title: 'Piutang Warung Melewati Batas Aman',
+      description: 'Piutang warung dengan usia >14 hari mencapai Rp 2.13 juta (15% dari total). Target penagihan perlu dipercepat.',
+      evidenceTrigger: {
+        metric: 'Piutang Overdue (>14 Hari)',
+        currentValue: 2130000,
+        threshold: 1000000,
+        variance: -1130000,
+        unit: 'IDR',
+      },
+      affectedEntity: 'Warung Sejo, Warung Mak Yanti, Toko Rompis',
+      projectedDate: '25 Sep 2026',
+      daysUntilCritical: 5,
+      recommendedAction:
+        'Kontak WhatsApp ke 3 warung dengan piutang >14 hari. Tawarkan cicilan mingguan atau potongan tunai untuk mempercepat pembayaran. Dokumentasikan setiap percakapan.',
+      generatedAt: '2026-09-20 14:35:22 WIB',
+      isDuplicate: false,
+      deduplicationGroupId: 'GRP-PIUTANG-WARNING-001',
+    },
+    {
+      id: 'ALERT-003',
+      severity: 'warning',
+      horizon: '21-30-day-structural',
+      title: 'Anomali Tren Penurunan Omzet Mingguan',
+      description: 'Omzet rata-rata penjualan minggu ini turun 18% dibanding rata-rata 3 bulan terakhir. Perlu investigasi faktor penyebab.',
+      evidenceTrigger: {
+        metric: 'Omzet Mingguan YoY',
+        currentValue: 12500000,
+        threshold: 15250000,
+        variance: -2750000,
+        unit: 'IDR',
+      },
+      affectedEntity: 'Penjualan Umum (Seluruh Produk)',
+      projectedDate: '20 Sep 2026',
+      daysUntilCritical: 0,
+      recommendedAction:
+        'Tinjau faktor eksternal: musim, kompetitor, atau event pasar. Jika trend terus menurun minggu depan, siapkan strategi promosi atau diversifikasi produk untuk mengimbangi.',
+      generatedAt: '2026-09-20 14:35:22 WIB',
+      isDuplicate: false,
+      deduplicationGroupId: 'GRP-OMZET-ANOMALI-001',
+    },
+  ],
+
+  // Fitur E: Financial Copilot Recommendations
+  copilotRecommendations: [
+    {
+      id: 'REC-001',
+      scenario: 'low-cash-high-ar',
+      priority: 'high',
+      message:
+        'Kas Anda diproyeksikan tersisa Rp 1,2 Juta pada hari Kamis karena harus belanja minyak goreng. Segera tagih Toko Berkah (Rp 2.500.000, jatuh tempo 3 hari lalu) via WhatsApp menggunakan tautan rincian tagihan.',
+      rationale: {
+        currentCashPosition: 5650000,
+        projectedCashPosition: 1200000,
+        constraint: 'Rencana belanja minyak goreng Rp 2.2 juta',
+        actionItem: 'Prioritas penagihan Toko Berkah & Warung Mak Siti hari ini juga',
+        whatsappTemplate:
+          'Halo Mas Eri, ini Pak Yudi dari Grosir Berkah. Tagihan beras Premium 50kg tanggal 17 Sep sudah jatuh tempo. Bisa dilunasi hari ini? Terima kasih 🙏',
+      },
+      generatedAt: '2026-09-20 14:35:22 WIB',
+      expiresAt: '2026-09-21 14:35:22 WIB',
+      guardrails: {
+        isVerified: true,
+        derivedFromModel: true,
+        hasHallucinationCheck: true,
+      },
+    },
+    {
+      id: 'REC-002',
+      scenario: 'approaching-bpr-due',
+      priority: 'high',
+      message:
+        'Angsuran BPR Rp 2.800.000 jatuh tempo 10 hari lagi. Batasi belanja stok mie instan maksimal Rp 3.000.000 minggu ini agar saldo aman terjaga hingga tanggal jatuh tempo.',
+      rationale: {
+        currentCashPosition: 5650000,
+        projectedCashPosition: 2800000,
+        constraint: 'Jatuh tempo angsuran BPR 12 Oktober 2026',
+        actionItem: 'Konservatif belanja minggu ini; fokus penagihan hingga saldo buffer terjaga',
+      },
+      generatedAt: '2026-09-20 14:35:22 WIB',
+      expiresAt: '2026-09-21 14:35:22 WIB',
+      guardrails: {
+        isVerified: true,
+        derivedFromModel: true,
+        hasHallucinationCheck: true,
+      },
+    },
+    {
+      id: 'REC-003',
+      scenario: 'slow-moving-inventory',
+      priority: 'medium',
+      message:
+        'Stok telur ayam grade B tertahan 9 hari di gudang. Target harus laku dalam 3 hari agar cash conversion cycle tidak melebar. Pertimbangkan diskon Rp 500/butir ke warung tier-2.',
+      rationale: {
+        currentCashPosition: 5650000,
+        projectedCashPosition: 4200000,
+        constraint: 'Stok lambat bergerak mengunci modal kerja',
+        actionItem: 'Promosi diskon bertarget ke warung tier-2 untuk percepat perputaran stok',
+      },
+      generatedAt: '2026-09-20 13:00:00 WIB',
+      expiresAt: '2026-09-21 13:00:00 WIB',
+      guardrails: {
+        isVerified: true,
+        derivedFromModel: true,
+        hasHallucinationCheck: true,
+      },
+    },
+  ],
+
+  // Fitur F: Financing Readiness Module
+  financingReadiness: {
+    merchant: {
+      id: '#MERCHANT-001',
+      name: 'Grosir Berkah Barokah',
+      owner: 'Pak Yudi Santoso',
+    },
+    readinessScore: {
+      profileCompleteness: 92,
+      transactionConsistency: 85,
+      paymentReliability: 88,
+      workingCapitalStability: 78,
+      overallScore: 86,
+    },
+    financialMetrics: {
+      avgMonthlyCashTurnover: 47500000,
+      avgDailyBalance: 8250000,
+      balanceStability: 0.12,
+      debtServiceCoverageProxy: 1.89,
+      workingCapitalNeed: 12600000,
+    },
+    documentation: {
+      profileAge: 45,
+      transactionDays: 65,
+      auditableDrill: true,
+      complianceFlags: ['Piutang >14 hari mencapai 15%', 'CCC melebar menjadi 22 hari'],
+    },
+    regulatoryNote:
+      '⚠️ INTERNAL DECISION SUPPORT ONLY - BUKAN CREDIT SCORE per POJK 29/2024. Keputusan Approve/Reject ada di komite kredit internal BPR.',
+    lastAssessed: '2026-09-20 14:35:22 WIB',
+    nextReviewDate: '2026-10-20',
+  },
+};

@@ -24,7 +24,7 @@ import { Debtor } from './types';
 
 export default function App() {
   // Navigation & Layout State
-  const [activeView, setActiveView] = useState<'bpr' | 'login' | 'merchant'>('bpr');
+  const [activeView, setActiveView] = useState<'bpr' | 'login' | 'merchant' | 'portfolio-mikro'>('bpr');
   const [currentTab, setCurrentTab] = useState('ledger');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
@@ -80,11 +80,12 @@ export default function App() {
   const handleConfirmAssign = (officerId: string, notes: string) => {
     showToast(`Instruksi intervensi untuk ${selectedDebtor.name} berhasil diteruskan ke Account Officer via WhatsApp.`);
   };
+
   if (activeView === 'login') {
-    return <MerchantLogin onComplete={() => setActiveView('merchant')} />;
+    return <MerchantLogin onComplete={() => setActiveView('portfolio-mikro')} />;
   }
 
-  if (activeView === 'merchant') {
+  if (activeView === 'portfolio-mikro') {
     return <MerchantDashboard onBackToBpr={() => setActiveView('bpr')} />;
   }
 
@@ -117,7 +118,7 @@ export default function App() {
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
           currentTab={currentTab}
           onTabChange={setCurrentTab}
-          onOpenMerchantLogin={() => setActiveView('login')}
+          onOpenMerchantLogin={() => setActiveView('portfolio-mikro')}
         />
 
         {/* Scrollable Dashboard Area */}
