@@ -1,0 +1,7 @@
+{
+  "name": "BAIESS Engine - POJK 29/2024 Solvency Triage",
+  "description": "Early-Warning Solvency Triage & DSS Likuiditas Debitur Mikro BPR sesuai POJK 29/2024 dan UU PDP No. 27/2022",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
