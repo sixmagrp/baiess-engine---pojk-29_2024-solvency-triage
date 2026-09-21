@@ -24,6 +24,8 @@ interface TopHeaderProps {
   onToggleSidebar: () => void;
   currentTab?: string;
   onTabChange?: (tab: string) => void;
+  onOpenMerchantLogin?: () => void;
+  variant?: 'bpr' | 'merchant';
 }
 
 interface ScrollSection {
@@ -74,6 +76,8 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
   onToggleSidebar,
   currentTab,
   onTabChange,
+  onOpenMerchantLogin,
+  variant = 'bpr',
 }) => {
   const [activeSectionId, setActiveSectionId] = useState<string>('section-solvency-zones');
   const [showSectionDropdown, setShowSectionDropdown] = useState(false);
@@ -198,12 +202,18 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
         <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-500 font-medium shrink-0">
           <span className="text-slate-800 font-semibold tracking-tight">BPR Mitra Jatim</span>
           <span className="text-slate-300">/</span>
-          <span className="text-slate-600">Portofolio Mikro</span>
+          <span 
+            className="text-slate-600 cursor-pointer hover:text-blue-600 transition-colors"
+            onClick={onOpenMerchantLogin}
+          >
+            Portofolio Mikro
+          </span>
         </div>
       </div>
 
       {/* Middle: Section Navigation (Responsive Pills on desktop, Dropdown on smaller screens) */}
-      <div className="flex items-center justify-center min-w-0 px-1 sm:px-2 flex-1">
+      {variant === 'bpr' && (
+        <div className="flex items-center justify-center min-w-0 px-1 sm:px-2 flex-1">
         {/* Desktop / Laptop Segmented Pill Bar */}
         <nav
           id="header-scroll-navigation"
@@ -289,11 +299,14 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
             </div>
           )}
         </div>
-      </div>
+        </div>
+      )}
 
       {/* Right Controls & Profile */}
       <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 shrink-0">
-        {/* Action: Unduh Laporan OJK */}
+        {variant === 'bpr' && (
+          <>
+            {/* Action: Unduh Laporan OJK */}
         <button
           id="btn-download-ojk-report"
           onClick={onDownloadReport}
@@ -372,9 +385,11 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
           )}
         </div>
 
-        <div className="h-4 w-px bg-slate-200 mx-0.5 hidden sm:block"></div>
+          <div className="h-4 w-px bg-slate-200 mx-0.5 hidden sm:block"></div>
+        </>
+      )}
 
-        {/* User Profile */}
+      {/* User Profile */}
         <div className="relative">
           <button
             id="user-profile-button"
@@ -397,7 +412,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
 
             <div className="text-left hidden xl:block leading-tight">
               <div className="text-xs font-semibold text-slate-800">Pak Bambang</div>
-              <div className="text-[10.5px] text-slate-400">Risk Management</div>
+              <div className="text-[10.5px] text-slate-400">{variant === 'merchant' ? 'Bisnis Owner' : 'Risk Management'}</div>
             </div>
 
             <ChevronDown className="w-3 h-3 text-slate-400 hidden xl:block" />

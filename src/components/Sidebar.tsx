@@ -22,6 +22,7 @@ interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   onOpen?: () => void;
+  variant?: 'bpr' | 'merchant';
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -32,6 +33,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isOpen,
   onClose,
   onOpen,
+  variant = 'bpr',
 }) => {
   return (
     <>
@@ -96,8 +98,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   Solvency Intelligence
                 </div>
                 <nav className="space-y-1">
-                  {/* Solvency Ledger */}
-                  <button
+                  {variant === 'bpr' && (
+                    <>
+                      {/* Solvency Ledger */}
+                      <button
                     id="nav-solvency-ledger"
                     onClick={() => onTabChange('ledger')}
                     className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors cursor-pointer ${
@@ -204,6 +208,112 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       <span>POJK Regulatory Audit</span>
                     </div>
                   </button>
+                    </>
+                  )}
+
+                  {variant === 'merchant' && (
+                    <>
+                      {/* Financial State Engine */}
+                      <button
+                        id="nav-financial-state"
+                        onClick={() => onTabChange('financial_state')}
+                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors cursor-pointer ${
+                          currentTab === 'financial_state'
+                            ? 'bg-blue-50/80 text-blue-600 font-bold'
+                            : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <Landmark
+                            className={`w-4 h-4 shrink-0 ${
+                              currentTab === 'financial_state' ? 'text-blue-600' : 'text-slate-600'
+                            }`}
+                          />
+                          <span className="truncate">Financial State Engine</span>
+                        </div>
+                      </button>
+
+                      {/* Tactical Cashflow Forecasting */}
+                      <button
+                        id="nav-cashflow"
+                        onClick={() => onTabChange('cashflow')}
+                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors cursor-pointer ${
+                          currentTab === 'cashflow'
+                            ? 'bg-blue-50/80 text-blue-600 font-bold'
+                            : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <TrendingUp
+                            className={`w-4 h-4 shrink-0 ${
+                              currentTab === 'cashflow' ? 'text-blue-600' : 'text-slate-700'
+                            }`}
+                          />
+                          <span className="truncate">Tactical Cashflow</span>
+                        </div>
+                      </button>
+
+                      {/* Dual-Horizon Early Warning */}
+                      <button
+                        id="nav-early-warning"
+                        onClick={() => onTabChange('early_warning')}
+                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors cursor-pointer ${
+                          currentTab === 'early_warning'
+                            ? 'bg-blue-50/80 text-blue-600 font-bold'
+                            : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <AlertTriangle
+                            className={`w-4 h-4 shrink-0 ${
+                              currentTab === 'early_warning' ? 'text-blue-600' : 'text-slate-700'
+                            }`}
+                          />
+                          <span className="truncate">Early Warning System</span>
+                        </div>
+                      </button>
+
+                      {/* Financial Copilot */}
+                      <button
+                        id="nav-copilot"
+                        onClick={() => onTabChange('copilot')}
+                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors cursor-pointer ${
+                          currentTab === 'copilot'
+                            ? 'bg-blue-50/80 text-blue-600 font-bold'
+                            : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <Smartphone
+                            className={`w-4 h-4 shrink-0 ${
+                              currentTab === 'copilot' ? 'text-blue-600' : 'text-slate-700'
+                            }`}
+                          />
+                          <span className="truncate">Financial Copilot</span>
+                        </div>
+                      </button>
+
+                      {/* Internal Financing Readiness */}
+                      <button
+                        id="nav-financing-readiness"
+                        onClick={() => onTabChange('financing_readiness')}
+                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors cursor-pointer ${
+                          currentTab === 'financing_readiness'
+                            ? 'bg-blue-50/80 text-blue-600 font-bold'
+                            : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <ShieldCheck
+                            className={`w-4 h-4 shrink-0 ${
+                              currentTab === 'financing_readiness' ? 'text-blue-600' : 'text-slate-700'
+                            }`}
+                          />
+                          <span className="truncate">Financing Readiness</span>
+                        </div>
+                      </button>
+                    </>
+                  )}
                 </nav>
               </div>
 

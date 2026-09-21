@@ -1,31 +1,27 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState } from 'react';
-import { RotateCw, CheckCircle2 } from 'lucide-react';
-import { Sidebar } from './components/Sidebar';
-import { TopHeader } from './components/TopHeader';
-import { SolvencyCards } from './components/SolvencyCards';
-import { DebtorTable } from './components/DebtorTable';
-import { BottomCards } from './components/BottomCards';
-import { DossierDrawer } from './components/DossierDrawer';
-import { PwaModal } from './components/PwaModal';
-import { AssignAoModal } from './components/AssignAoModal';
-import { OjkReportModal } from './components/OjkReportModal';
-import { PdpAuditModal } from './components/PdpAuditModal';
-import { SkDireksiModal } from './components/SkDireksiModal';
-import { AoRouteModal } from './components/AoRouteModal';
-import { MerchantLogin } from './components/MerchantLogin';
-import { MerchantDashboard } from './components/MerchantDashboard';
-import { DEBTORS_DATA, ACCOUNT_OFFICERS } from './data/debtors';
-import { Debtor } from './types';
+import { RotateCw, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { Sidebar } from './Sidebar';
+import { TopHeader } from './TopHeader';
+import { SolvencyCards } from './SolvencyCards';
+import { DebtorTable } from './DebtorTable';
+import { BottomCards } from './BottomCards';
+import { DossierDrawer } from './DossierDrawer';
+import { PwaModal } from './PwaModal';
+import { AssignAoModal } from './AssignAoModal';
+import { OjkReportModal } from './OjkReportModal';
+import { PdpAuditModal } from './PdpAuditModal';
+import { SkDireksiModal } from './SkDireksiModal';
+import { AoRouteModal } from './AoRouteModal';
+import { DEBTORS_DATA, ACCOUNT_OFFICERS } from '../data/debtors';
+import { Debtor } from '../types';
 
-export default function App() {
+interface MerchantDashboardProps {
+  onBackToBpr: () => void;
+}
+
+export function MerchantDashboard({ onBackToBpr }: MerchantDashboardProps) {
   // Navigation & Layout State
-  const [activeView, setActiveView] = useState<'bpr' | 'login' | 'merchant'>('bpr');
-  const [currentTab, setCurrentTab] = useState('ledger');
+  const [currentTab, setCurrentTab] = useState('financial_state');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   // Debtor Selection & Dossier Slide-Over
@@ -80,16 +76,19 @@ export default function App() {
   const handleConfirmAssign = (officerId: string, notes: string) => {
     showToast(`Instruksi intervensi untuk ${selectedDebtor.name} berhasil diteruskan ke Account Officer via WhatsApp.`);
   };
-  if (activeView === 'login') {
-    return <MerchantLogin onComplete={() => setActiveView('merchant')} />;
-  }
-
-  if (activeView === 'merchant') {
-    return <MerchantDashboard onBackToBpr={() => setActiveView('bpr')} />;
-  }
 
   return (
-    <div className="min-h-screen bg-[#f8f9ff] flex text-[#0b1c30] font-sans antialiased">
+    <div className="min-h-screen bg-[#f8f9ff] flex text-[#0b1c30] font-sans antialiased relative">
+      
+      {/* Floating Back Button */}
+      <button 
+        onClick={onBackToBpr}
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-slate-900 text-white px-4 py-3 rounded-full shadow-xl shadow-slate-900/20 hover:bg-slate-800 transition-all font-medium text-sm"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Kembali ke Login
+      </button>
+
       {/* Left Autohide Navigation Rail */}
       <Sidebar
         currentTab={currentTab}
@@ -104,6 +103,7 @@ export default function App() {
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         onOpen={() => setIsSidebarOpen(true)}
+        variant="merchant"
       />
 
       {/* Main Workspace */}
@@ -117,7 +117,7 @@ export default function App() {
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
           currentTab={currentTab}
           onTabChange={setCurrentTab}
-          onOpenMerchantLogin={() => setActiveView('login')}
+          variant="merchant"
         />
 
         {/* Scrollable Dashboard Area */}
@@ -125,19 +125,21 @@ export default function App() {
           id="main-dashboard-content"
           className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-7 max-w-[1700px] w-full mx-auto"
         >
-          {/* View Title & Sync Status Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
-            <div>
+          {currentTab === 'financial_state' ? (
+            <>
+              {/* View Title & Sync Status Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+                <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight font-display">
-                  Early-Warning Solvency Triage
+                  Merchant Dashboard View
                 </h1>
-                <span className="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded">
-                  POJK 29/2024 AUDIT READY
+                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">
+                  ISOLATED VIEW
                 </span>
               </div>
               <p className="text-xs text-slate-600 mt-1 leading-relaxed max-w-3xl">
-                Pemantauan deteksi dini likuiditas debitur mikro dalam rentang horizon 21–30 hari sebelum tanggal angsuran kredit BPR.
+                Tampilan dashboard independen setelah proses onboarding merchant selesai.
               </p>
             </div>
 
@@ -175,23 +177,22 @@ export default function App() {
             activeZoneFilter={selectedZone}
           />
 
-          {/* Bottom 3 Institutional Cards */}
-          <BottomCards
-            officers={ACCOUNT_OFFICERS}
-            onOpenSkDireksi={() => setIsSkDireksiOpen(true)}
-            onOpenPdpLogs={() => setIsPdpLogsOpen(true)}
-            onOpenAoRoute={() => setIsAoRouteOpen(true)}
-          />
+              {/* Bottom 3 Institutional Cards */}
+              <BottomCards
+                officers={ACCOUNT_OFFICERS}
+                onOpenSkDireksi={() => setIsSkDireksiOpen(true)}
+                onOpenPdpLogs={() => setIsPdpLogsOpen(true)}
+                onOpenAoRoute={() => setIsAoRouteOpen(true)}
+              />
+            </>
+          ) : (
+            <div className="w-full h-[80vh] bg-white rounded-xl shadow-xs border border-slate-100 flex items-center justify-center text-slate-300">
+              {/* Blank state as requested */}
+            </div>
+          )}
         </main>
       </div>
 
-      {/* Right Slide-Over Dossier Drawer */}
-      <DossierDrawer
-        debtor={selectedDebtor}
-        isOpen={isDossierOpen}
-        onClose={() => setIsDossierOpen(false)}
-        onAssignAo={handleOpenAssignAo}
-      />
 
       {/* Interactive Modals */}
       <PwaModal
@@ -237,7 +238,7 @@ export default function App() {
 
       {/* Floating Notification Toast */}
       {toastMessage && (
-        <div className="fixed bottom-4 right-4 z-60 bg-slate-900 text-white text-xs px-4 py-3 rounded-lg shadow-xl border border-slate-700 flex items-center gap-2.5 animate-in slide-in-from-bottom-2 duration-200">
+        <div className="fixed bottom-20 right-6 z-60 bg-slate-900 text-white text-xs px-4 py-3 rounded-lg shadow-xl border border-slate-700 flex items-center gap-2.5 animate-in slide-in-from-bottom-2 duration-200">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
