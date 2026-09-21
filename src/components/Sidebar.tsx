@@ -19,6 +19,7 @@ import {
   Info,
   Smartphone,
 } from 'lucide-react';
+import baiessLogo from '../assets/baiess-logo.svg';
 
 interface SidebarProps {
   currentTab: string;
@@ -81,43 +82,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="w-[264px] h-full flex flex-col justify-between overflow-y-auto overflow-x-hidden">
           <div>
             {/* Header */}
-            <div className="p-4.5 border-b border-slate-100 flex items-start justify-between">
-              <div className="flex items-start gap-3 min-w-0">
-                <Landmark className="w-7 h-7 text-blue-600 shrink-0 mt-0.5" strokeWidth={2.2} />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-slate-900 tracking-tight text-[14.5px] font-display truncate">
-                      {variant === 'merchant' ? 'Financial Engine' : 'BAIESS Engine'}
-                    </span>
-                    <span className="text-[10px] font-semibold bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded border border-blue-100 shrink-0">
-                      v2.4
-                    </span>
-                  </div>
-                  {variant === 'merchant' ? (
-                    <>
-                      <div className="text-[11px] font-medium text-slate-400 mt-0.5 truncate">
-                        Merchant Dashboard
-                      </div>
-                      <div className="text-[10.5px] text-slate-400 truncate">
-                        Real-time Financial State
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="text-[11px] font-medium text-slate-400 mt-0.5 truncate">
-                        POJK 29/2024 DSS
-                      </div>
-                      <div className="text-[10.5px] text-slate-400 truncate">
-                        BPR Mitra Jatim
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
+            <div className="pt-0 pb-3 px-4 border-b border-slate-100 flex flex-col items-center justify-start relative">
+              <img src={baiessLogo} alt="BAIESS" className="w-30 h-24 shrink-0" />
 
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer shrink-0 ml-1"
+                className="absolute top-2 right-2 p-1.5 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
                 title="Sembunyikan Sidebar"
               >
                 <PanelLeftClose className="w-4 h-4" />
@@ -331,7 +301,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           {/* Footer */}
           <div className="p-4 border-t border-slate-100 text-xs text-slate-500">
-            <p>© 2026 BAIESS DSS</p>
+            <p>© 2026 BAIESS • Financial Clarity for Greater Tomorrow</p>
           </div>
         </div>
       </aside>

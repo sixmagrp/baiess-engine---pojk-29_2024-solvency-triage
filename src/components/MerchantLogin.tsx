@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShieldCheck, Smartphone, KeyRound, CheckCircle2, FileText, UploadCloud, ArrowRight, Loader2, Landmark } from 'lucide-react';
+import { ShieldCheck, Smartphone, KeyRound, CheckCircle2, FileText, UploadCloud, ArrowRight, Loader2 } from 'lucide-react';
+import baiessLogo from '../assets/baiess-logo.svg';
 
 type LoginStep = 'phone' | 'otp' | 'consent' | 'upload' | 'processing' | 'success';
 
@@ -77,11 +78,11 @@ export function MerchantLogin({ onComplete }: MerchantLoginProps) {
         
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-xl shadow-blue-500/20 mb-4">
-            <Landmark className="w-7 h-7" />
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-xl shadow-blue-500/20 mb-4 p-3">
+            <img src={baiessLogo} alt="BAIESS" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 font-display">Baiess PWA</h1>
-          <p className="text-slate-500 mt-2 text-sm">Akses pembiayaan modal kerja cepat & aman</p>
+          <h1 className="text-2xl font-bold text-slate-900 font-display">BAIESS</h1>
+          <p className="text-slate-500 mt-2 text-sm">Financial Clarity for Greater Tomorrow</p>
         </div>
 
         {/* Card Container */}
@@ -303,7 +304,7 @@ export function MerchantLogin({ onComplete }: MerchantLoginProps) {
                       <circle cx="50" cy="50" r="45" fill="none" strokeWidth="8" stroke="currentColor" strokeDasharray="70 200" strokeLinecap="round" />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center text-blue-600">
-                      <Landmark className="w-8 h-8 animate-pulse" />
+                      <Loader2 className="w-8 h-8 animate-spin" />
                     </div>
                   </div>
                   
