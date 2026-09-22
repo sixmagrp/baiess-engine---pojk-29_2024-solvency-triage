@@ -29,6 +29,7 @@ interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   onOpen?: () => void;
+  onBackToLanding?: () => void;
   variant?: 'bpr' | 'merchant';
 }
 
@@ -40,6 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isOpen,
   onClose,
   onOpen,
+  onBackToLanding,
   variant = 'bpr',
 }) => {
   // Menu untuk Merchant (Financial State Engine)
@@ -83,7 +85,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div>
             {/* Header */}
             <div className="pt-0 pb-3 px-4 border-b border-slate-100 flex flex-col items-center justify-start relative">
-              <img src={baiessLogo} alt="BAIESS" className="w-30 h-24 shrink-0" />
+              {onBackToLanding ? (
+                <button
+                  onClick={onBackToLanding}
+                  className="hover:opacity-85 transition-opacity cursor-pointer group flex flex-col items-center"
+                  title="Kembali ke Beranda & Profil Platform BAIESS"
+                >
+                  <img src={baiessLogo} alt="BAIESS" className="w-30 h-24 shrink-0" />
+                  <span className="text-[10.5px] text-blue-600 font-semibold -mt-2 group-hover:underline">
+                    ← Beranda BAIESS
+                  </span>
+                </button>
+              ) : (
+                <img src={baiessLogo} alt="BAIESS" className="w-30 h-24 shrink-0" />
+              )}
 
               <button
                 onClick={onClose}

@@ -14,6 +14,7 @@ import {
   Shield,
   MapPin,
   Compass,
+  Home,
 } from 'lucide-react';
 
 interface TopHeaderProps {
@@ -25,6 +26,7 @@ interface TopHeaderProps {
   currentTab?: string;
   onTabChange?: (tab: string) => void;
   onOpenMerchantLogin?: () => void;
+  onBackToLanding?: () => void;
   variant?: 'bpr' | 'merchant';
 }
 
@@ -77,6 +79,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
   currentTab,
   onTabChange,
   onOpenMerchantLogin,
+  onBackToLanding,
   variant = 'bpr',
 }) => {
   const [activeSectionId, setActiveSectionId] = useState<string>('section-solvency-zones');
@@ -200,6 +203,19 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
 
         {/* Workspace Path / Breadcrumbs */}
         <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-500 font-medium shrink-0">
+          {onBackToLanding && (
+            <>
+              <button
+                onClick={onBackToLanding}
+                className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium transition-colors cursor-pointer px-1.5 py-0.5 rounded hover:bg-blue-50"
+                title="Kembali ke Beranda & Profil Platform BAIESS"
+              >
+                <Home className="w-3.5 h-3.5" />
+                <span>Beranda BAIESS</span>
+              </button>
+              <span className="text-slate-300">/</span>
+            </>
+          )}
           <span className="text-slate-800 font-semibold tracking-tight">BPR Mitra Jatim</span>
           <span className="text-slate-300">/</span>
           <span 

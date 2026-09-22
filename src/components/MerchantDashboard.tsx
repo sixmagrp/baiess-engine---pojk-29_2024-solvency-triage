@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { RotateCw, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { RotateCw, CheckCircle2, ArrowLeft, Home, Building2 } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 import { TopHeader } from './TopHeader';
 import { FinancialStateEngine } from './FinancialStateEngine';
@@ -16,11 +16,12 @@ import { MERCHANT_CONTEXT } from '../data/debtors';
 
 interface MerchantDashboardProps {
   onBackToBpr: () => void;
+  onBackToLanding?: () => void;
 }
 
 type TabType = 'financial-state' | 'cashflow-forecast' | 'early-warnings' | 'copilot' | 'financing';
 
-export function MerchantDashboard({ onBackToBpr }: MerchantDashboardProps) {
+export function MerchantDashboard({ onBackToBpr, onBackToLanding }: MerchantDashboardProps) {
   const [currentTab, setCurrentTab] = useState<TabType>('financial-state');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
@@ -50,14 +51,27 @@ export function MerchantDashboard({ onBackToBpr }: MerchantDashboardProps) {
 
   return (
     <div className="min-h-screen bg-[#f8f9ff] flex text-[#0b1c30] font-sans antialiased relative">
-      {/* Floating Back Button */}
-      <button 
-        onClick={onBackToBpr}
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-slate-900 text-white px-4 py-3 rounded-full shadow-xl shadow-slate-900/20 hover:bg-slate-800 transition-all font-medium text-sm"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Keluar
-      </button>
+      {/* Floating Back Buttons */}
+      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2">
+        {onBackToLanding && (
+          <button 
+            onClick={onBackToLanding}
+            className="flex items-center gap-2 bg-slate-800 text-white px-4 py-3 rounded-full shadow-xl shadow-slate-900/20 hover:bg-slate-700 transition-all font-medium text-xs sm:text-sm cursor-pointer"
+            title="Kembali ke Beranda Platform BAIESS"
+          >
+            <Home className="w-4 h-4 text-blue-400" />
+            <span>Beranda BAIESS</span>
+          </button>
+        )}
+        <button 
+          onClick={onBackToBpr}
+          className="flex items-center gap-2 bg-slate-900 text-white px-4 py-3 rounded-full shadow-xl shadow-slate-900/20 hover:bg-slate-800 transition-all font-medium text-xs sm:text-sm cursor-pointer"
+          title="Ke Dashboard BPR"
+        >
+          <Building2 className="w-4 h-4 text-emerald-400" />
+          <span>Dashboard BPR</span>
+        </button>
+      </div>
 
       {/* Left Navigation Rail */}
       <Sidebar
@@ -68,6 +82,7 @@ export function MerchantDashboard({ onBackToBpr }: MerchantDashboardProps) {
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         onOpen={() => setIsSidebarOpen(true)}
+        onBackToLanding={onBackToLanding}
         variant="merchant"
       />
 
@@ -92,9 +107,20 @@ export function MerchantDashboard({ onBackToBpr }: MerchantDashboardProps) {
                 <p className="text-xs text-slate-500">{MERCHANT_CONTEXT.market}</p>
               </div>
             </div>
-            <div className="text-right">
-              <p className="text-xs text-slate-500">Sinkronisasi Terakhir</p>
-              <p className="text-sm font-mono text-slate-700">{syncTime}</p>
+            <div className="flex items-center gap-3">
+              {onBackToLanding && (
+                <button
+                  onClick={onBackToLanding}
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors cursor-pointer"
+                >
+                  <Home className="w-3.5 h-3.5 text-blue-600" />
+                  <span>Beranda BAIESS</span>
+                </button>
+              )}
+              <div className="text-right">
+                <p className="text-xs text-slate-500">Sinkronisasi Terakhir</p>
+                <p className="text-sm font-mono text-slate-700">{syncTime}</p>
+              </div>
             </div>
           </div>
         </div>

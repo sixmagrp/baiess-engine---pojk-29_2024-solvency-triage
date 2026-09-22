@@ -19,12 +19,13 @@ import { SkDireksiModal } from './components/SkDireksiModal';
 import { AoRouteModal } from './components/AoRouteModal';
 import { MerchantLogin } from './components/MerchantLogin';
 import { MerchantDashboard } from './components/MerchantDashboard';
+import { LandingPage } from './components/LandingPage';
 import { DEBTORS_DATA, ACCOUNT_OFFICERS } from './data/debtors';
 import { Debtor } from './types';
 
 export default function App() {
   // Navigation & Layout State
-  const [activeView, setActiveView] = useState<'bpr' | 'login' | 'merchant' | 'portfolio-mikro'>('bpr');
+  const [activeView, setActiveView] = useState<'landing' | 'bpr' | 'login' | 'merchant' | 'portfolio-mikro'>('landing');
   const [currentTab, setCurrentTab] = useState('ledger');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
@@ -81,12 +82,32 @@ export default function App() {
     showToast(`Instruksi intervensi untuk ${selectedDebtor.name} berhasil diteruskan ke Account Officer via WhatsApp.`);
   };
 
+  if (activeView === 'landing') {
+    return (
+      <LandingPage
+        onEnterBpr={() => setActiveView('bpr')}
+        onEnterMerchant={() => setActiveView('portfolio-mikro')}
+        onEnterLogin={() => setActiveView('login')}
+      />
+    );
+  }
+
   if (activeView === 'login') {
-    return <MerchantLogin onComplete={() => setActiveView('portfolio-mikro')} />;
+    return (
+      <MerchantLogin
+        onComplete={() => setActiveView('portfolio-mikro')}
+        onBack={() => setActiveView('landing')}
+      />
+    );
   }
 
   if (activeView === 'portfolio-mikro') {
-    return <MerchantDashboard onBackToBpr={() => setActiveView('bpr')} />;
+    return (
+      <MerchantDashboard
+        onBackToBpr={() => setActiveView('bpr')}
+        onBackToLanding={() => setActiveView('landing')}
+      />
+    );
   }
 
   return (
@@ -105,6 +126,7 @@ export default function App() {
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         onOpen={() => setIsSidebarOpen(true)}
+        onBackToLanding={() => setActiveView('landing')}
       />
 
       {/* Main Workspace */}
@@ -119,6 +141,7 @@ export default function App() {
           currentTab={currentTab}
           onTabChange={setCurrentTab}
           onOpenMerchantLogin={() => setActiveView('portfolio-mikro')}
+          onBackToLanding={() => setActiveView('landing')}
         />
 
         {/* Scrollable Dashboard Area */}

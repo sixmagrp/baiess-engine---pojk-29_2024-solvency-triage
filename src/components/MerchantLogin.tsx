@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShieldCheck, Smartphone, KeyRound, CheckCircle2, FileText, UploadCloud, ArrowRight, Loader2 } from 'lucide-react';
+import { ShieldCheck, Smartphone, KeyRound, CheckCircle2, FileText, UploadCloud, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
 import baiessLogo from '../assets/baiess-logo.svg';
 
 type LoginStep = 'phone' | 'otp' | 'consent' | 'upload' | 'processing' | 'success';
 
 interface MerchantLoginProps {
   onComplete: () => void;
+  onBack?: () => void;
 }
 
-export function MerchantLogin({ onComplete }: MerchantLoginProps) {
+export function MerchantLogin({ onComplete, onBack }: MerchantLoginProps) {
   const [step, setStep] = useState<LoginStep>('phone');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -76,6 +77,17 @@ export function MerchantLogin({ onComplete }: MerchantLoginProps) {
 
       <div className="w-full max-w-md z-10">
         
+        {/* Back Button */}
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="mb-4 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white/80 hover:bg-white px-3 py-1.5 rounded-full border border-slate-200/80 shadow-xs transition-colors cursor-pointer"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Kembali ke Beranda BAIESS</span>
+          </button>
+        )}
+
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-xl shadow-blue-500/20 mb-4 p-3">
